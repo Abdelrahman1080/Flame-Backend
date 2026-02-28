@@ -15,7 +15,7 @@ import java.util.List;
 @AllArgsConstructor //constructor with all args
 public class Provider extends User {
 
-    private String companyName; // Optional: اسم الشركة أو وصف
+    private String companyName;
 
     @OneToMany(mappedBy = "provider", cascade = CascadeType.ALL,fetch =  FetchType.EAGER)
     private List<Event> eventsCreated;

@@ -30,14 +30,19 @@ public class Event {
     @JoinColumn(name = "provider_id")
     private Provider provider;
 
+
     @ManyToMany
     @JoinTable(
             name = "event_customers",
             joinColumns = @JoinColumn(name = "event_id"),
             inverseJoinColumns = @JoinColumn(name = "customer_id")
     )
-    @JsonManagedReference
     private List<Customer> customers;
+
+
+
+
+
 
 
     public Event() {}
