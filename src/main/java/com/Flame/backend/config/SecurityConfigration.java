@@ -25,7 +25,14 @@ public class SecurityConfigration {
 
 
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/v1/auth/**").permitAll()  // السماح للـ login/register
+                        .requestMatchers("/api/v1/auth/**").permitAll()
+                        .requestMatchers("/swagger-ui/**","/swagger-ui.html", "/v3/api-docs/**").permitAll()
+                        .requestMatchers("/api/users/me").permitAll()
+                        .requestMatchers("/api/events/create/**").hasAnyRole("PROVIDER","ADMIN")
+                        .requestMatchers("/api/workshops/create/**").hasAnyRole("PROVIDER","ADMIN")
+                        .requestMatchers("/api/events/update/**").hasAnyRole("PROVIDER","ADMIN")
+                        .requestMatchers("/api/workshops/update/**").hasAnyRole("PROVIDER","ADMIN")
+
                         .anyRequest().authenticated()                    // أي endpoint تاني محتاج توثيق
                 )
 

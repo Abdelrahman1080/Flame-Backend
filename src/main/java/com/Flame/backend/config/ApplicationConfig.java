@@ -1,7 +1,7 @@
 package com.Flame.backend.config;
 
 
-import com.Flame.backend.user.UserRepository;
+import com.Flame.backend.DAO.users.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

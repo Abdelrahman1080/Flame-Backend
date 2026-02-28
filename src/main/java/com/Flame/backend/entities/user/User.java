@@ -1,10 +1,8 @@
-package com.Flame.backend.user;
+package com.Flame.backend.entities.user;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,8 +10,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 
-@Data //getter and setters
-@Builder //constructor with all args
+
+
+@SuperBuilder
+@Getter
+@Setter
 @NoArgsConstructor //constructor with no args
 @AllArgsConstructor //constructor with all args
 @Entity
