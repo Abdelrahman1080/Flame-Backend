@@ -32,6 +32,7 @@ public class SecurityConfigration {
                         .requestMatchers("/api/workshops/create/**").hasAnyRole("PROVIDER","ADMIN")
                         .requestMatchers("/api/events/update/**").hasAnyRole("PROVIDER","ADMIN")
                         .requestMatchers("/api/workshops/update/**").hasAnyRole("PROVIDER","ADMIN")
+                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
 
                         .anyRequest().authenticated()                    // أي endpoint تاني محتاج توثيق
                 )
