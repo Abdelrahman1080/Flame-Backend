@@ -13,8 +13,8 @@ import java.util.List;
 @Entity
 
 @SuperBuilder
-@NoArgsConstructor //constructor with no args
-@AllArgsConstructor //constructor with all args
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 public class Customer extends User {
