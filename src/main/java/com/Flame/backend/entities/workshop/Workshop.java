@@ -39,6 +39,8 @@ import lombok.Setter;
     private LocalDate startDate;
     private LocalDate endDate;
     private Integer capacity;
+    private boolean suspended;
+    private String suspensionReason;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore

@@ -7,11 +7,13 @@ import java.util.List;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.Flame.backend.DAO.event.EventRepository;
 import com.Flame.backend.entities.event.Event;
@@ -38,10 +40,11 @@ public class EventController {
                 && (normalizedLocation == null || normalizedLocation.isEmpty())
                 && fromDate == null
                 && toDate == null) {
-            return eventRepository.findAll();
+            return eventRepository.findBySuspendedFalse();
         }
 
-        Specification<Event> specification = (root, query, criteriaBuilder) -> criteriaBuilder.conjunction();
+        Specification<Event> specification = (root, query, criteriaBuilder) ->
+                criteriaBuilder.isFalse(root.get("suspended"));
 
         if (normalizedCategory != null && !normalizedCategory.isEmpty()) {
             String categoryFilter = normalizedCategory.toLowerCase();
@@ -86,7 +89,11 @@ public class EventController {
 
     @GetMapping("/{id}")
     public Event getEvent(@PathVariable Long id) {
-        return eventRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Event not found"));
+        Event event = eventRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not found"));
+        if (event.isSuspended()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not found");
+        }
+        return event;
     }
 }

@@ -5,11 +5,13 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.Flame.backend.DAO.workshop.WorkshopRepository;
 import com.Flame.backend.entities.workshop.Workshop;
@@ -37,7 +39,7 @@ public class WorkshopController {
                 && (normalizedLocation == null || normalizedLocation.isEmpty())
                 && fromDate == null
                 && toDate == null) {
-            return workshopRepository.findAll();
+            return workshopRepository.findBySuspendedFalse();
         }
 
         return workshopRepository.searchFiltered(normalizedCategory, normalizedLocation, fromDate, toDate);
@@ -45,7 +47,11 @@ public class WorkshopController {
 
     @GetMapping("/{id}")
     public Workshop getWorkshop(@PathVariable Long id) {
-        return workshopRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Workshop not found"));
+        Workshop workshop = workshopRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Workshop not found"));
+        if (workshop.isSuspended()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Workshop not found");
+        }
+        return workshop;
     }
 }

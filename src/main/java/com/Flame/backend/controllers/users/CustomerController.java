@@ -211,6 +211,9 @@ public class CustomerController {
         Customer customer = (Customer) authentication.getPrincipal();
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new RuntimeException("Event not found"));
+        if (event.isSuspended()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Event is suspended");
+        }
 
         int ticketCount = 1;
         String bookingEmail = customer.getEmail();
@@ -296,6 +299,9 @@ public class CustomerController {
         Customer customer = (Customer) authentication.getPrincipal();
         Workshop workshop = workshopRepository.findById(workshopId)
                 .orElseThrow(() -> new RuntimeException("Workshop not found"));
+        if (workshop.isSuspended()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Workshop is suspended");
+        }
 
         int ticketCount = 1;
         String bookingEmail = customer.getEmail();

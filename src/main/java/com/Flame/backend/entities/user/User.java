@@ -44,6 +44,8 @@ public class User implements UserDetails {
 
     private String preferences;
     private String profileImageUrl;
+    private boolean suspended;
+    private String suspensionReason;
 
     @Enumerated(EnumType.STRING)
     private Role role;
@@ -77,6 +79,6 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true ;
+        return !suspended;
     }
 }

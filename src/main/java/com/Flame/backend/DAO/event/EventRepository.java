@@ -25,6 +25,7 @@ public interface EventRepository extends JpaRepository<Event, Long>, JpaSpecific
 
     List<Event> findByProvider(Provider provider);
     List<Event> findByProvider_Id(Integer providerId);
+    List<Event> findBySuspendedFalse();
 
     @Query(value = """
             SELECT
@@ -48,6 +49,7 @@ public interface EventRepository extends JpaRepository<Event, Long>, JpaSpecific
                     ), 0)
                 END AS score
             FROM event e
+            WHERE COALESCE(e.suspended, false) = false
             ORDER BY score DESC, e.id DESC
             LIMIT :limit
             """, nativeQuery = true)

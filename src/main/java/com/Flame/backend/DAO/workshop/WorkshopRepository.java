@@ -25,11 +25,13 @@ public interface WorkshopRepository extends JpaRepository<Workshop, Long> {
 
     List<Workshop> findByProvider(Provider provider);
     List<Workshop> findByProvider_Id(Integer providerId);
+    List<Workshop> findBySuspendedFalse();
 
         @Query("""
             SELECT w
             FROM Workshop w
             WHERE (:category IS NULL OR :category = '' OR LOWER(COALESCE(w.category, '')) LIKE LOWER(CONCAT('%', :category, '%')))
+                            AND COALESCE(w.suspended, false) = false
               AND (:location IS NULL OR :location = '' OR LOWER(COALESCE(w.location, '')) LIKE LOWER(CONCAT('%', :location, '%')))
               AND (:fromDate IS NULL OR COALESCE(w.endDate, w.startDate) >= :fromDate)
               AND (:toDate IS NULL OR w.startDate <= :toDate)
@@ -64,6 +66,7 @@ public interface WorkshopRepository extends JpaRepository<Workshop, Long> {
                     ), 0)
                 END AS score
             FROM workshop w
+            WHERE COALESCE(w.suspended, false) = false
             ORDER BY score DESC, w.id DESC
             LIMIT :limit
             """, nativeQuery = true)
