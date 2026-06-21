@@ -1,26 +1,14 @@
 package com.Flame.backend.entities.event;
 
-import java.time.LocalDate;
-import java.util.List;
-
-import org.hibernate.Hibernate;
-
 import com.Flame.backend.entities.user.Customer;
-import com.Flame.backend.entities.user.Provider;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.List;
 
 @Entity
 @Getter
@@ -34,21 +22,15 @@ public class Event {
     private String title;
     private String description;
     private String location;
-    private String category;
-    private String imageUrl;
-    private LocalDate startDate;
-    private LocalDate endDate;
     private Integer capacity;
-    private boolean suspended;
-    private String suspensionReason;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
     @JoinColumn(name = "provider_id")
-    private Provider provider;
+    private Customer provider;
 
 
-        @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany
     @JoinTable(
             name = "event_customers",
             joinColumns = @JoinColumn(name = "event_id"),
@@ -63,29 +45,12 @@ public class Event {
 
 
     public Event() {}
-    public Event(String title, String description, String location, String category, String imageUrl, LocalDate startDate, LocalDate endDate, Integer capacity, Provider provider) {
+    public Event(String title, String description, String location, Integer capacity, Customer provider) {
         this.title = title;
         this.description = description;
         this.location = location;
-        this.category = category;
-        this.imageUrl = imageUrl;
-        this.startDate = startDate;
-        this.endDate = endDate;
         this.capacity = capacity;
         this.provider = provider;
-    }
-
-    @JsonProperty("providerId")
-    public Integer getProviderId() {
-        return provider == null ? null : provider.getId();
-    }
-
-    @JsonProperty("providerCompanyName")
-    public String getProviderCompanyName() {
-        if (provider == null || !Hibernate.isInitialized(provider)) {
-            return null;
-        }
-        return provider.getCompanyName();
     }
 
 
