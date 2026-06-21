@@ -63,7 +63,13 @@ public class UserProfileController {
         Files.copy(file.getInputStream(), target, StandardCopyOption.REPLACE_EXISTING);
 
         User user = (User) authentication.getPrincipal();
-        user.setProfileImageUrl("/uploads/profile-images/" + filename);
-        return userRepository.save(user);
+        if(user != null) {
+            if (user.getProfileUrl() != null) {
+                Files.deleteIfExists(Paths.get(user.getProfileUrl()));
+            }
+            user.setProfileUrl("/uploads/profile-images/" + filename);
+            return userRepository.save(user);
+        }
+        return null;
     }
 }
