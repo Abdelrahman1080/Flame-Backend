@@ -1,0 +1,1231 @@
+{
+  "info": {
+    "_postman_id": "97b5df9b-3630-4847-9b7b-34a541addc36",
+    "name": "Flame",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "44400435",
+    "_collection_link": "https://go.postman.co/collection/44400435-97b5df9b-3630-4847-9b7b-34a541addc36?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Customer",
+      "item": [
+        {
+          "name": "Book-Event",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0YyIsImlhdCI6MTc4MjA1MTIyMiwiZXhwIjoxNzgyMTM3NjIyfQ.CM1B4aConXwWbm_UCrrDoj44RhNeaqkXlic22UAZ2_s",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/customer/events/1/book",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "customer",
+                "events",
+                "1",
+                "book"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Book-workshop",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0YyIsImlhdCI6MTc4MjA1MDA5OSwiZXhwIjoxNzgyMTM2NDk5fQ.G13RcMO8dJJkipIoUzkt7YQpw8tfaq10WTp-Rx4LlCA",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/customer/workshops/1/book",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "customer",
+                "workshops",
+                "1",
+                "book"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Booked-Workshops",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0YyIsImlhdCI6MTc4MjMxNTM3OSwiZXhwIjoxNzgyNDAxNzc5fQ.xYuDpcL5jLska5l5zaSvgQz5WXBv4s570TtNjRDVHhU",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/customer/workshops/booked",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "customer",
+                "workshops",
+                "booked"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Booked-Events",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0YyIsImlhdCI6MTc4MjMxNTM3OSwiZXhwIjoxNzgyNDAxNzc5fQ.xYuDpcL5jLska5l5zaSvgQz5WXBv4s570TtNjRDVHhU",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/customer/events/booked",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "customer",
+                "events",
+                "booked"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Cancel-booking-workshop",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0YyIsImlhdCI6MTc4MjMxNTM3OSwiZXhwIjoxNzgyNDAxNzc5fQ.xYuDpcL5jLska5l5zaSvgQz5WXBv4s570TtNjRDVHhU",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/customer/workshops/bookings/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "customer",
+                "workshops",
+                "bookings",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Cancel-booking-events",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0YyIsImlhdCI6MTc4MjMxNTM3OSwiZXhwIjoxNzgyNDAxNzc5fQ.xYuDpcL5jLska5l5zaSvgQz5WXBv4s570TtNjRDVHhU",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/customer/events/bookings/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "customer",
+                "events",
+                "bookings",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Provider",
+      "item": [
+        {
+          "name": "create-workshop",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0YyIsImlhdCI6MTc4MjA1MTIyMiwiZXhwIjoxNzgyMTM3NjIyfQ.CM1B4aConXwWbm_UCrrDoj44RhNeaqkXlic22UAZ2_s",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"title\": \"Spring Boot Masterclass\",\r\n  \"description\": \"Deep dive into Spring\",\r\n  \"location\": \"Alexandria\",\r\n  \"date\": \"2026-06-15\",\r\n  \"price\": 300\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/provider/workshops",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "provider",
+                "workshops"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "create-event",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0YyIsImlhdCI6MTc4MjA1MTIyMiwiZXhwIjoxNzgyMTM3NjIyfQ.CM1B4aConXwWbm_UCrrDoj44RhNeaqkXlic22UAZ2_s",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"title\": \"Spring Boot Masterclass\",\r\n  \"description\": \"Deep dive into Spring\",\r\n  \"location\": \"Alexandria\",\r\n  \"date\": \"2026-06-15\",\r\n  \"price\": 300\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/provider/events",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "provider",
+                "events"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "getProviderEvents",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0cCIsImlhdCI6MTc3MjI5MjU3MCwiZXhwIjoxNzcyMzc4OTcwfQ.na7Sm8Ef3Ab32u05U2xpDXh2XcYmAejQ9d_Diw--VvU",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/provider/events",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "provider",
+                "events"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "getProviderWorkshops",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080api/provider/workshops",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080api",
+              "path": [
+                "provider",
+                "workshops"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "events-customers",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/provider/events-customers/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "provider",
+                "events-customers",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "workshops-customers",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/provider/workshops-customers/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "provider",
+                "workshops-customers",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "DeleteProviderWorkshops Copy",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0YyIsImlhdCI6MTc3MjI5NzQ0MiwiZXhwIjoxNzcyMzgzODQyfQ.SScl9jkjbZoe1X_VptS8KY6vtzKbFcbdCz9cXA07BAk",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080api/provider/workshops/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080api",
+              "path": [
+                "provider",
+                "workshops",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "DeleteProviderEvents",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0YyIsImlhdCI6MTc3MjI5NzQ0MiwiZXhwIjoxNzcyMzgzODQyfQ.SScl9jkjbZoe1X_VptS8KY6vtzKbFcbdCz9cXA07BAk",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080api/provider/events/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080api",
+              "path": [
+                "provider",
+                "events",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "register User",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"firstName\": \"userc\",\r\n  \"lastName\": \"testc\",\r\n  \"email\": \"testc\",\r\n  \"password\": \"testc\",\r\n  \"role\":\"USER\"\r\n}\r\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/v1/auth/register",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "register"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "register Provider",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"firstName\": \"user\",\r\n  \"lastName\": \"test\",\r\n  \"email\": \"testp\",\r\n  \"password\": \"testp\",\r\n  \"role\":\"PROVIDER\"\r\n}\r\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/v1/auth/register",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "register"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "register Admin",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"firstName\": \"usera\",\r\n  \"lastName\": \"testa\",\r\n  \"email\": \"testa\",\r\n  \"password\": \"testa\",\r\n  \"role\":\"ADMIN\"\r\n}\r\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/v1/auth/register",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "register"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "login",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"email\": \"testc\",\r\n  \"password\": \"testc\"\r\n}\r\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/v1/auth/authenticate",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "authenticate"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "PublicEvents-Workshops",
+      "item": [
+        {
+          "name": "GetAllEvents",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0YyIsImlhdCI6MTc3MjMwNTA3NiwiZXhwIjoxNzcyMzkxNDc2fQ.RhRMCXfnnf1OOjr9TvrRvO-OB-FIxJGt-dmKHT04JII",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/events",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "events"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GetAllWorkshops",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0YyIsImlhdCI6MTc3MjMwNTA3NiwiZXhwIjoxNzcyMzkxNDc2fQ.RhRMCXfnnf1OOjr9TvrRvO-OB-FIxJGt-dmKHT04JII",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/workshops",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "workshops"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get-Event-By-ID",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0YyIsImlhdCI6MTc3MjMwNjQzOSwiZXhwIjoxNzcyMzkyODM5fQ.LcBP5pkHMwVnCoWUnHK8PBpT8AcQhHlFL_Sx8isWX2o",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/events/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "events",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get-Workshop-By-ID",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0YyIsImlhdCI6MTc3MjI5MzI1MywiZXhwIjoxNzcyMzc5NjUzfQ.8qUmLUTE3qiJEu7B2SdzOCkWMrzJ1Q1wWU45A5pWYuY",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/workshops/3",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "workshops",
+                "3"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Admin",
+      "item": [
+        {
+          "name": "Get-ALL-Users",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0YyIsImlhdCI6MTc3MjMwNzAxOCwiZXhwIjoxNzcyMzkzNDE4fQ.SmbMpGZDrSU5rqwc7vz4i752xqSy6H8ZSayYNj3ygTo",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/admin/users",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "admin",
+                "users"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete-User-By-ID",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0YyIsImlhdCI6MTc3MjMwNzAxOCwiZXhwIjoxNzcyMzkzNDE4fQ.SmbMpGZDrSU5rqwc7vz4i752xqSy6H8ZSayYNj3ygTo",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/admin/users/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "admin",
+                "users",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Reels",
+      "item": [
+        {
+          "name": "Upload Reel",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0YyIsImlhdCI6MTc4MjA1OTM4NSwiZXhwIjoxNzgyMTQ1Nzg1fQ.xe2_RMZBp7w-IUT7UCf_6EIVmw_X_HokxxBlJ7RPg80",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "video",
+                  "type": "file",
+                  "src": "/C:/Users/river/Videos/2023-04-15/01-23-30.mp4"
+                },
+                {
+                  "key": "caption",
+                  "type": "text",
+                  "value": "my reel"
+                },
+                {
+                  "key": "preferences",
+                  "type": "text",
+                  "value": "music,football,coding"
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/reels/upload",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "reels",
+                "upload"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Reels",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0YyIsImlhdCI6MTc4MjA2NTkzMywiZXhwIjoxNzgyMTUyMzMzfQ.2Ay2NkPvO-UU_WB_2E3e35Fdvlj4iWr9YPmSgc3MO3M",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/reels",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "reels"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Reel By ID",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0YyIsImlhdCI6MTc4MjA1OTM4NSwiZXhwIjoxNzgyMTQ1Nzg1fQ.xe2_RMZBp7w-IUT7UCf_6EIVmw_X_HokxxBlJ7RPg80",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/reels/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "reels",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Feed(Still Developed)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0YyIsImlhdCI6MTc4MjA1OTM4NSwiZXhwIjoxNzgyMTQ1Nzg1fQ.xe2_RMZBp7w-IUT7UCf_6EIVmw_X_HokxxBlJ7RPg80",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/reels/feed",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "reels",
+                "feed"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Reel",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0YyIsImlhdCI6MTc4MjA2NTkzMywiZXhwIjoxNzgyMTUyMzMzfQ.2Ay2NkPvO-UU_WB_2E3e35Fdvlj4iWr9YPmSgc3MO3M",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/reels/5",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "reels",
+                "5"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Likes",
+      "item": [
+        {
+          "name": "Toggle Like Reel",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0YyIsImlhdCI6MTc4MjA2NTkzMywiZXhwIjoxNzgyMTUyMzMzfQ.2Ay2NkPvO-UU_WB_2E3e35Fdvlj4iWr9YPmSgc3MO3M",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/reels/5/like",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "reels",
+                "5",
+                "like"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Saves",
+      "item": [
+        {
+          "name": "Toggle Save Reel",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0YyIsImlhdCI6MTc4MjA2NTkzMywiZXhwIjoxNzgyMTUyMzMzfQ.2Ay2NkPvO-UU_WB_2E3e35Fdvlj4iWr9YPmSgc3MO3M",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/reels/5/save",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "reels",
+                "5",
+                "save"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Comments",
+      "item": [
+        {
+          "name": "Add Comment",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0YyIsImlhdCI6MTc4MjA2NTkzMywiZXhwIjoxNzgyMTUyMzMzfQ.2Ay2NkPvO-UU_WB_2E3e35Fdvlj4iWr9YPmSgc3MO3M",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"content\": \"amazing reel2!\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/comments/5",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "comments",
+                "5"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Comments By Reel",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0YyIsImlhdCI6MTc4MjA1OTM4NSwiZXhwIjoxNzgyMTQ1Nzg1fQ.xe2_RMZBp7w-IUT7UCf_6EIVmw_X_HokxxBlJ7RPg80",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/comments/4",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "comments",
+                "4"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "get-current-user",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MiIsImlhdCI6MTc3MjI4ODEyNCwiZXhwIjoxNzcyMjg5NTY0fQ.n2Tin1BRC5ruGh7_VRNaPH-rSOg_mmXt2V46sBmsH14",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/api/users/me",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "users",
+            "me"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Update-User",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MiIsImlhdCI6MTc3MjI4ODEyNCwiZXhwIjoxNzcyMjg5NTY0fQ.n2Tin1BRC5ruGh7_VRNaPH-rSOg_mmXt2V46sBmsH14",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n \r\n  \"firstname\": \"newstring\",\r\n  \"lastname\": \"string\",\r\n  \"email\": \"string\",\r\n  \"password\": \"string\",\r\n  \"role\": \"USER\",\r\n  \"enabled\": true,\r\n  \"authorities\": [\r\n    {\r\n      \"authority\": \"USER\"\r\n    }\r\n  ],\r\n  \"username\": \"string\",\r\n  \"accountNonExpired\": true,\r\n  \"accountNonLocked\": true,\r\n  \"credentialsNonExpired\": true\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/users/me",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "users",
+            "me"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Delete-Event",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0cCIsImlhdCI6MTc3MjI5MjU3MCwiZXhwIjoxNzcyMzc4OTcwfQ.na7Sm8Ef3Ab32u05U2xpDXh2XcYmAejQ9d_Diw--VvU",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/api/provider/events/2",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "provider",
+            "events",
+            "2"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

@@ -134,7 +134,6 @@ public class CustomerController {
         Files.copy(file.getInputStream(), target, StandardCopyOption.REPLACE_EXISTING);
 
         Customer customer = (Customer) authentication.getPrincipal();
-        customer.setProfileImageUrl("/uploads/profile-images/" + filename);
         return userRepository.save(customer);
     }
 
@@ -149,11 +148,10 @@ public class CustomerController {
         }
         preferenceService.ensureAllExist(normalized);
 
-        customer.setPreferences(String.join(",", normalized));
         return userRepository.save(customer);
     }
 
-    @GetMapping("/recommendations")
+   /* @GetMapping("/recommendations")
     public Map<String, Object> getRecommendations(
             Authentication authentication,
             @org.springframework.web.bind.annotation.RequestParam(defaultValue = "10") int limit
@@ -167,7 +165,7 @@ public class CustomerController {
                 "events", eventRepository.findRecommendedEvents(preferences, safeLimit),
                 "workshops", workshopRepository.findRecommendedWorkshops(preferences, safeLimit)
         );
-    }
+    }*/
 
     @GetMapping("/events/booked")
     public List<Map<String, Object>> getBookedEvents(Authentication authentication) {
@@ -211,9 +209,7 @@ public class CustomerController {
         Customer customer = (Customer) authentication.getPrincipal();
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new RuntimeException("Event not found"));
-        if (event.isSuspended()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Event is suspended");
-        }
+
 
         int ticketCount = 1;
         String bookingEmail = customer.getEmail();
@@ -271,23 +267,7 @@ public class CustomerController {
         );
     }
 
-    @DeleteMapping("/events/{eventId}/book")
-    @Transactional
-    public String cancelEventBooking(@PathVariable Long eventId, Authentication authentication) {
-        Customer customer = (Customer) authentication.getPrincipal();
-        Event event = eventRepository.findById(eventId)
-                .orElseThrow(() -> new RuntimeException("Event not found"));
-
-        if (event.getCustomers() != null) {
-            event.getCustomers().remove(customer);
-        }
-        if (customer.getEventsBooked() != null) {
-            customer.getEventsBooked().remove(event);
-        }
-
-        eventRepository.save(event);
-        return "Event booking canceled";
-    }
+ 
 
     @PostMapping("/workshops/{workshopId}/book")
     @Transactional
@@ -299,9 +279,7 @@ public class CustomerController {
         Customer customer = (Customer) authentication.getPrincipal();
         Workshop workshop = workshopRepository.findById(workshopId)
                 .orElseThrow(() -> new RuntimeException("Workshop not found"));
-        if (workshop.isSuspended()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Workshop is suspended");
-        }
+
 
         int ticketCount = 1;
         String bookingEmail = customer.getEmail();
@@ -365,6 +343,17 @@ public class CustomerController {
         Customer customer = (Customer) authentication.getPrincipal();
         EventTicketBooking booking = eventTicketBookingRepository.findById(bookingId)
                 .orElseThrow(() -> new RuntimeException("Event booking not found"));
+        Event event =eventRepository.findById(booking.getEvent().getId())
+                .orElseThrow(() -> new RuntimeException("Event not found"));
+
+        if (event.getCustomers() != null) {
+            event.getCustomers().remove(customer);
+        }
+        if (customer.getEventsBooked() != null) {
+            customer.getEventsBooked().remove(event);
+        }
+
+        eventRepository.save(event);
 
         boolean isOwner = booking.getCustomer() != null && booking.getCustomer().getId().equals(customer.getId());
         boolean isRecipient = booking.getBookingEmail() != null
@@ -384,6 +373,17 @@ public class CustomerController {
         WorkshopTicketBooking booking = workshopTicketBookingRepository.findById(bookingId)
                 .orElseThrow(() -> new RuntimeException("Workshop booking not found"));
 
+        Workshop workshop =workshopRepository.findById(booking.getWorkshop().getId())
+                .orElseThrow(() -> new RuntimeException("Workshop not found"));
+
+        if (workshop.getCustomers() != null) {
+            workshop.getCustomers().remove(customer);
+        }
+        if (customer.getWorkshopsBooked() != null) {
+            customer.getWorkshopsBooked().remove(workshop);
+        }
+
+        workshopRepository.save(workshop);
         boolean isOwner = booking.getCustomer() != null && booking.getCustomer().getId().equals(customer.getId());
         boolean isRecipient = booking.getBookingEmail() != null
             && booking.getBookingEmail().equalsIgnoreCase(customer.getEmail());
@@ -395,21 +395,13 @@ public class CustomerController {
         return "Workshop booking canceled";
     }
 
-    @DeleteMapping("/workshops/{workshopId}/book")
-    @Transactional
-    public String cancelWorkshopBooking(@PathVariable Long workshopId, Authentication authentication) {
-        Customer customer = (Customer) authentication.getPrincipal();
-        Workshop workshop = workshopRepository.findById(workshopId)
-                .orElseThrow(() -> new RuntimeException("Workshop not found"));
 
-        if (workshop.getCustomers() != null) {
-            workshop.getCustomers().remove(customer);
-        }
-        if (customer.getWorkshopsBooked() != null) {
-            customer.getWorkshopsBooked().remove(workshop);
-        }
 
-        workshopRepository.save(workshop);
-        return "Workshop booking canceled";
-    }
+
+
+
+
+
+
+
 }

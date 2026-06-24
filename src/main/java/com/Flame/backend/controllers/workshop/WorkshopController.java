@@ -3,14 +3,15 @@ package com.Flame.backend.controllers.workshop;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
-import org.springframework.format.annotation.DateTimeFormat;
+import com.Flame.backend.DAO.users.CustomerRepository;
+import com.Flame.backend.DAO.users.UserRepository;
+import com.Flame.backend.entities.user.Customer;
+import com.Flame.backend.entities.user.User;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.Flame.backend.DAO.workshop.WorkshopRepository;
@@ -24,34 +25,34 @@ import lombok.RequiredArgsConstructor;
 public class WorkshopController {
 
     private final WorkshopRepository workshopRepository;
+    private final UserRepository userRepository;
+    private final CustomerRepository customerRepository;
 
     @GetMapping
-    public List<Workshop> getAllWorkshops(
-            @RequestParam(required = false) String category,
-            @RequestParam(required = false) String location,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate
-    ) {
-        String normalizedCategory = category == null ? null : category.trim();
-        String normalizedLocation = location == null ? null : location.trim();
-
-        if ((normalizedCategory == null || normalizedCategory.isEmpty())
-                && (normalizedLocation == null || normalizedLocation.isEmpty())
-                && fromDate == null
-                && toDate == null) {
-            return workshopRepository.findBySuspendedFalse();
-        }
-
-        return workshopRepository.searchFiltered(normalizedCategory, normalizedLocation, fromDate, toDate);
+    public List<Workshop> getAllWorkshops() {
+        return workshopRepository.findAll();
     }
+
+
 
     @GetMapping("/{id}")
     public Workshop getWorkshop(@PathVariable Long id) {
         Workshop workshop = workshopRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Workshop not found"));
-        if (workshop.isSuspended()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Workshop not found");
-        }
+
         return workshop;
+    }
+
+    @DeleteMapping("/{id}")
+    public Workshop deleteWorkshop(@PathVariable Long id) {
+        Authentication authentication = org.springframework.security.core.context.SecurityContextHolder.getContext().getAuthentication();
+        Optional<Customer> user =   customerRepository.findByEmail(authentication.getName());
+        if(user.isPresent() && user.get().getWorkshopsCreated().stream().noneMatch(workshop -> workshop.getId().equals(id))) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You are not authorized to delete this workshop");
+        }
+        Workshop workshop = workshopRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Workshop not found"));
+     workshopRepository.deleteById(id);
+     return workshop;
     }
 }

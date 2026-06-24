@@ -36,6 +36,7 @@ public class Event {
             joinColumns = @JoinColumn(name = "event_id"),
             inverseJoinColumns = @JoinColumn(name = "customer_id")
     )
+    @JsonIgnore
     private List<Customer> customers;
 
 

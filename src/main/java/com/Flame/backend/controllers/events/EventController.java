@@ -3,16 +3,17 @@ package com.Flame.backend.controllers.events;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
+import com.Flame.backend.DAO.users.CustomerRepository;
+import com.Flame.backend.entities.user.Customer;
+import com.Flame.backend.entities.workshop.Workshop;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.Flame.backend.DAO.event.EventRepository;
@@ -25,75 +26,31 @@ import lombok.RequiredArgsConstructor;
 public class EventController {
 
     private final EventRepository eventRepository;
+    private final CustomerRepository customerRepository;
 
     @GetMapping
-    public List<Event> getAllEvents(
-            @RequestParam(required = false) String category,
-            @RequestParam(required = false) String location,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate
-    ) {
-        String normalizedCategory = category == null ? null : category.trim();
-        String normalizedLocation = location == null ? null : location.trim();
-
-        if ((normalizedCategory == null || normalizedCategory.isEmpty())
-                && (normalizedLocation == null || normalizedLocation.isEmpty())
-                && fromDate == null
-                && toDate == null) {
-            return eventRepository.findBySuspendedFalse();
-        }
-
-        Specification<Event> specification = (root, query, criteriaBuilder) ->
-                criteriaBuilder.isFalse(root.get("suspended"));
-
-        if (normalizedCategory != null && !normalizedCategory.isEmpty()) {
-            String categoryFilter = normalizedCategory.toLowerCase();
-            specification = specification.and((root, query, criteriaBuilder) ->
-                criteriaBuilder.like(
-                    criteriaBuilder.lower(criteriaBuilder.coalesce(root.get("category"), "")),
-                    "%" + categoryFilter + "%"
-                )
-            );
-        }
-
-        if (normalizedLocation != null && !normalizedLocation.isEmpty()) {
-            String locationFilter = normalizedLocation.toLowerCase();
-            specification = specification.and((root, query, criteriaBuilder) ->
-                criteriaBuilder.like(
-                    criteriaBuilder.lower(criteriaBuilder.coalesce(root.get("location"), "")),
-                    "%" + locationFilter + "%"
-                )
-            );
-        }
-
-        if (fromDate != null) {
-            specification = specification.and((root, query, criteriaBuilder) ->
-                criteriaBuilder.or(
-                    criteriaBuilder.greaterThanOrEqualTo(root.get("endDate"), fromDate),
-                    criteriaBuilder.and(
-                        criteriaBuilder.isNull(root.get("endDate")),
-                        criteriaBuilder.greaterThanOrEqualTo(root.get("startDate"), fromDate)
-                    )
-                )
-            );
-        }
-
-        if (toDate != null) {
-            specification = specification.and((root, query, criteriaBuilder) ->
-                criteriaBuilder.lessThanOrEqualTo(root.get("startDate"), toDate)
-            );
-        }
-
-        return eventRepository.findAll(specification, Sort.by(Sort.Order.asc("startDate"), Sort.Order.desc("id")));
-    }
+    public List<Event> getAllEvents() {
+        return eventRepository.findAll(Sort.by(Sort.Direction.DESC, "date"));
+   }
 
     @GetMapping("/{id}")
     public Event getEvent(@PathVariable Long id) {
         Event event = eventRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not found"));
-        if (event.isSuspended()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not found");
+
+        return event;
+    }
+
+    @DeleteMapping("/{id}")
+    public Event deleteWorkshop(@PathVariable Long id) {
+        Authentication authentication = org.springframework.security.core.context.SecurityContextHolder.getContext().getAuthentication();
+        Optional<Customer> user =   customerRepository.findByEmail(authentication.getName());
+        if(user.isPresent() && user.get().getEventsCreated().stream().noneMatch(workshop -> workshop.getId().equals(id))) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You are not authorized to delete this event");
         }
+        Event event = eventRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not found"));
+        eventRepository.deleteById(id);
         return event;
     }
 }

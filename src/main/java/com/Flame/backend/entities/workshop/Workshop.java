@@ -35,6 +35,7 @@ import java.util.List;
             joinColumns = @JoinColumn(name = "workshop_id"),
             inverseJoinColumns = @JoinColumn(name = "customer_id")
     )
+    @JsonIgnore
     private List<Customer> customers;
 
     // Constructors

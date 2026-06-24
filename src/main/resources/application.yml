@@ -2,7 +2,7 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/flamedb
     username: postgres
-    password: Nez@18102003
+    password: root
     driver-class-name: org.postgresql.Driver
 
   jpa:

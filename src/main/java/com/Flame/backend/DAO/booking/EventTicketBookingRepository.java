@@ -2,6 +2,9 @@ package com.Flame.backend.DAO.booking;
 
 import java.util.List;
 
+import com.Flame.backend.entities.booking.WorkshopTicketBooking;
+import com.Flame.backend.entities.event.Event;
+import com.Flame.backend.entities.workshop.Workshop;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -23,4 +26,10 @@ public interface EventTicketBookingRepository extends JpaRepository<EventTicketB
             @Param("customer") Customer customer,
             @Param("email") String email
     );
+
+    EventTicketBooking findByEvent(Event event);
+
+
+    List<EventTicketBooking> findByCustomer(Customer customer);
+
 }
