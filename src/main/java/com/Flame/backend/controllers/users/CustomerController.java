@@ -47,7 +47,6 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/api/customer")
 @RequiredArgsConstructor
-@PreAuthorize("hasRole('USER')") // ضمان أن ده للـ Customers بس
 public class CustomerController {
 
     private static final int MAX_PREFERENCES = 5;
