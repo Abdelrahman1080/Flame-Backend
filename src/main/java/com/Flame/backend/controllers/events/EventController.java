@@ -30,7 +30,7 @@ public class EventController {
 
     @GetMapping
     public List<Event> getAllEvents() {
-        return eventRepository.findAll(Sort.by(Sort.Direction.DESC, "date"));
+        return eventRepository.findAll();
    }
 
     @GetMapping("/{id}")

@@ -7,7 +7,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -39,6 +41,10 @@ public class Event {
     @JsonIgnore
     private List<Customer> customers;
 
+    @CreatedDate
+    private LocalDateTime startDate;
+
+    private LocalDateTime endDate;
 
 
 
