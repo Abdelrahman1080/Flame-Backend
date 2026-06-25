@@ -5,8 +5,10 @@ import com.Flame.backend.DAO.users.CustomerRepository;
 import com.Flame.backend.DTO.reels.ReelResponseDTO;
 import com.Flame.backend.entities.Reels.Reel;
 import com.Flame.backend.entities.user.Customer;
+import com.Flame.backend.enums.ReelStatus;
 import com.Flame.backend.mappers.ReelMapper;
 import com.Flame.backend.services.PreferenceService;
+import com.Flame.backend.services.reelsModeration.ReelModerationService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -27,6 +29,7 @@ public class ReelServiceImpl implements ReelService {
     private final ReelRepository reelRepository;
     private final CustomerRepository customerRepository;
     private final PreferenceService preferenceService;
+    private final ReelModerationService reelModerationService; // NEW
 
     // ---------------- UPLOAD ----------------
 
@@ -57,9 +60,14 @@ public class ReelServiceImpl implements ReelService {
                 .preferences(
                         preferenceService.mergeCsvPreferences("", preferences)
                 )
+                .status(ReelStatus.PENDING_REVIEW) // NEW — starts as pending
                 .build();
 
         Reel saved = reelRepository.save(reel);
+
+        // NEW — trigger background AI moderation scan
+        // user gets instant response, scan runs in background thread
+        reelModerationService.scanAndPersistAsync(saved, "reels/" + filename);
 
         return ReelMapper.toDTO(saved, customer);
     }
@@ -71,7 +79,8 @@ public class ReelServiceImpl implements ReelService {
 
         Customer customer = getCurrentUser();
 
-        return reelRepository.findAll()
+        // NEW — only return APPROVED reels to normal users
+        return reelRepository.findByStatus(ReelStatus.APPROVED)
                 .stream()
                 .map(reel -> ReelMapper.toDTO(reel, customer))
                 .toList();
@@ -86,6 +95,11 @@ public class ReelServiceImpl implements ReelService {
 
         Reel reel = reelRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Reel not found"));
+
+        // NEW — block access to non-approved reels
+        if (!reel.isPubliclyVisible()) {
+            throw new RuntimeException("Reel is not available.");
+        }
 
         return ReelMapper.toDTO(reel, customer);
     }
