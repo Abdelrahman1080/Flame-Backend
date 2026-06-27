@@ -27,4 +27,12 @@ public interface ReelRepository extends JpaRepository<Reel, Long> {
     Page<Reel> findUnseenByStatusOrderByCreatedAtDesc(@org.springframework.data.repository.query.Param("status") ReelStatus status, 
                                                       @org.springframework.data.repository.query.Param("customer") Customer customer, 
                                                       Pageable pageable);
+
+    // New — used by RagRetrievalService
+    @org.springframework.data.jpa.repository.Query("SELECT r FROM Reel r WHERE r.status = :status AND " +
+            "(LOWER(r.caption) LIKE LOWER(CONCAT('%', :keyword, '%')) OR LOWER(r.preferences) LIKE LOWER(CONCAT('%', :keyword, '%'))) " +
+            "ORDER BY r.createdAt DESC")
+    List<Reel> findTop5ForRagContext(@org.springframework.data.repository.query.Param("status") ReelStatus status,
+                                     @org.springframework.data.repository.query.Param("keyword") String keyword,
+                                     Pageable pageable);
 }
