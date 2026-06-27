@@ -1077,6 +1077,65 @@
             }
           },
           "response": []
+        },
+        {
+          "name": "Upload Dummy Reel (No Moderation)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0YyIsImlhdCI6MTc4MjU5NzA4MiwiZXhwIjoxNzgyNjgzNDgyfQ.Z2BbEzNouKI27tZ-CkdQQ-3UTQ7Tj5iWUtWlLtqp5Lc",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "video",
+                  "type": "file",
+                  "src": [
+                    "",
+                    "/F:/Level-4/Graduation-Project/Nezar-work/uploads/reels/f26c39b7-eee9-48ca-8c55-58aceee2756c_Women after fight Fame MMA _Beautiful yet brutal MMA fight._ #shorts #ufc #zusje.mp4"
+                  ]
+                },
+                {
+                  "key": "caption",
+                  "value": "Test reel caption",
+                  "type": "text"
+                },
+                {
+                  "key": "preferences",
+                  "value": "fitness,sports",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/reels/upload/dummy",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "reels",
+                "upload",
+                "dummy"
+              ]
+            },
+            "description": "Upload a reel and skip moderation. Reel is instantly APPROVED. For testing/dummy data only."
+          },
+          "response": []
         }
       ]
     },

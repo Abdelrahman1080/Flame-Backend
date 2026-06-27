@@ -14,7 +14,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ReelsController {
 
-private final ReelService reelService;
+    private final ReelService reelService;
     @PostMapping("/upload")
     public ReelResponseDTO uploadReel(
             @RequestParam MultipartFile video,
@@ -47,6 +47,17 @@ private final ReelService reelService;
     @PostMapping("/{id}/save")
     public void save(@PathVariable Long id) {
         reelService.toggleSave(id);
+    }
+
+    // Dummy upload — skips moderation, sets status to APPROVED directly
+    // Use this for testing only, not for production
+    @PostMapping("/upload/dummy")
+    public ReelResponseDTO uploadDummy(
+            @RequestParam MultipartFile video,
+            @RequestParam String caption,
+            @RequestParam String preferences) throws IOException {
+
+        return reelService.uploadDummy(video, caption, preferences);
     }
 
 }

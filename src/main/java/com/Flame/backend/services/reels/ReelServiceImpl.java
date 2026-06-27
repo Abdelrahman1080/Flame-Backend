@@ -156,6 +156,40 @@ public class ReelServiceImpl implements ReelService {
         reelRepository.save(reel);
     }
 
+    // ---------------- UPLOAD DUMMY (no moderation) ----------------
+
+    @Override
+    public ReelResponseDTO uploadDummy(MultipartFile video,
+                                       String caption,
+                                       String preferences) throws IOException {
+
+        Customer customer = getCurrentUser();
+
+        String filename = UUID.randomUUID() + "_" + video.getOriginalFilename();
+
+        Path uploadDir = Paths.get("uploads/reels");
+        if (!Files.exists(uploadDir))
+            Files.createDirectories(uploadDir);
+
+        Files.copy(
+                video.getInputStream(),
+                uploadDir.resolve(filename),
+                StandardCopyOption.REPLACE_EXISTING
+        );
+
+        Reel reel = Reel.builder()
+                .caption(caption)
+                .videoUrl("/uploads/reels/" + filename)
+                .creator(customer)
+                .preferences(
+                        preferenceService.mergeCsvPreferences("", preferences)
+                )
+                .status(ReelStatus.APPROVED) // skip moderation, approve directly
+                .build();
+
+        return ReelMapper.toDTO(reelRepository.save(reel), customer);
+    }
+
     // ---------------- AUTH ----------------
 
     private Customer getCurrentUser() {

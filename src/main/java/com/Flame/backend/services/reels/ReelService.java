@@ -24,4 +24,7 @@ public interface ReelService {
 
     void toggleSave(Long reelId);
 
+    ReelResponseDTO uploadDummy(MultipartFile video,
+                                String caption,
+                                String preferences) throws IOException;
 }
