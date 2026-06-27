@@ -8,8 +8,9 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
-
+import java.util.Set;
 
 
 @SuperBuilder
@@ -29,7 +30,9 @@ public class User implements UserDetails {
     private String email;
     private String password;
     private String profileUrl;
+
     @Enumerated(EnumType.STRING)
+
     private Role role;
 
     @Override
@@ -52,6 +55,19 @@ public class User implements UserDetails {
         return true;
 
     }
+
+    // People who follow this user
+    @ManyToMany
+    @JoinTable(
+            name = "user_followers",
+            joinColumns = @JoinColumn(name = "following_id"),
+            inverseJoinColumns = @JoinColumn(name = "follower_id")
+    )
+    private Set<User> followers = new HashSet<>();
+
+    // People this user follows
+    @ManyToMany(mappedBy = "followers")
+    private Set<User> following = new HashSet<>();
 
     @Override
     public boolean isCredentialsNonExpired() {

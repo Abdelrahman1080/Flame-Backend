@@ -7,6 +7,9 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.UUID;
 
+import com.Flame.backend.DTO.customer.UserResponse;
+import com.Flame.backend.entities.user.Customer;
+import com.Flame.backend.entities.user.Role;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,8 +34,22 @@ public class UserProfileController {
     private final UserRepository userRepository;
 
     @GetMapping("/me")
-    public User getCurrentUser(Authentication authentication) {
-        return (User) authentication.getPrincipal();
+    public UserResponse getCurrentUser(Authentication authentication) {
+
+        User user = (User) authentication.getPrincipal();
+
+        Role role = (user instanceof Customer)
+                ? Role.USER
+                : Role.ADMIN;
+
+        return new UserResponse(
+                user.getId(),
+                user.getFirstname(),
+                user.getLastname(),
+                user.getEmail(),
+                user.getProfileUrl(),
+                role
+        );
     }
 
     @PostMapping(value = "/me/profile-image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
