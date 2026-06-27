@@ -25,6 +25,13 @@ public class Customer extends User {
     private BigDecimal balance = BigDecimal.ZERO;
     private String companyName;
 
+    /**
+     * Comma-separated user preference tags, e.g. "fitness,cooking,sports".
+     * Normalized to lowercase by PreferenceService.
+     * Used by FeedScoringService to personalise the recommendation feed.
+     */
+    private String preferences;
+
 
 
     @ManyToMany(mappedBy = "customers", fetch = FetchType.EAGER)
@@ -36,15 +43,19 @@ public class Customer extends User {
     private List<Workshop> workshopsBooked;
 
     @OneToMany(mappedBy="creator")
+    @JsonIgnore
     private List<Reel> createdReels;
 
     @ManyToMany(mappedBy="likes")
+    @JsonIgnore
     private Set<Reel> likedReels;
 
     @ManyToMany(mappedBy="savedBy")
+    @JsonIgnore
     private Set<Reel> savedReels;
 
     @OneToMany(mappedBy="user")
+    @JsonIgnore
     private List<Comment> comments;
 
 

@@ -147,6 +147,10 @@ public class CustomerController {
         }
         preferenceService.ensureAllExist(normalized);
 
+        // FIX: actually persist the preferences onto the customer entity
+        String prefsCsv = String.join(",", normalized);
+        customer.setPreferences(prefsCsv.isBlank() ? null : prefsCsv);
+
         return userRepository.save(customer);
     }
 

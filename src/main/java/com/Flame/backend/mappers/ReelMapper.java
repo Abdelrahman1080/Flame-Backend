@@ -33,6 +33,8 @@ public class ReelMapper {
                                 .map(ReelMapper::toCommentDTO)
                                 .collect(Collectors.toList())
                 )
+                // FIX: was silently dropped — createdAt exists on both entity and DTO
+                .createdAt(reel.getCreatedAt())
                 .build();
     }
 
@@ -44,10 +46,15 @@ public class ReelMapper {
                 .build();
     }
 
+    /**
+     * FIX: added null-guard — a reel with no creator would previously throw NPE.
+     * Null creator returns null CustomerLiteDTO (handled gracefully by the frontend).
+     */
     public static CustomerLiteDTO toCustomerLite(Customer c) {
+        if (c == null) return null;
         return CustomerLiteDTO.builder()
                 .id(c.getId())
                 .name(c.getFirstname())
                 .build();
     }
-}
+}
