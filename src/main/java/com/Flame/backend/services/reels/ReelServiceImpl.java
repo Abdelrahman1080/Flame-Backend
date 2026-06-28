@@ -85,6 +85,21 @@ public class ReelServiceImpl implements ReelService {
                 .map(reel -> ReelMapper.toDTO(reel, customer))
                 .toList();
     }
+        // get By Customer
+    @Override
+    public List<ReelResponseDTO> getReelsByUser(Integer userId) {
+
+
+        Customer customer = getCurrentUser();
+
+        // NEW — only return APPROVED reels to normal users
+        return reelRepository.findByStatusAndCreator(ReelStatus.APPROVED, customer)
+                .stream()
+                .map(reel -> ReelMapper.toDTO(reel, customer))
+                .toList();
+
+
+    }
 
     // ---------------- GET BY ID ----------------
 
@@ -189,6 +204,8 @@ public class ReelServiceImpl implements ReelService {
 
         return ReelMapper.toDTO(reelRepository.save(reel), customer);
     }
+
+
 
     // ---------------- AUTH ----------------
 

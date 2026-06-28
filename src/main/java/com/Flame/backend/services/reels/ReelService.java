@@ -27,4 +27,5 @@ public interface ReelService {
     ReelResponseDTO uploadDummy(MultipartFile video,
                                 String caption,
                                 String preferences) throws IOException;
+    List<ReelResponseDTO> getReelsByUser(Integer userId);
 }

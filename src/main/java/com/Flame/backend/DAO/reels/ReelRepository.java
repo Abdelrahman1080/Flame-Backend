@@ -16,6 +16,7 @@ public interface ReelRepository extends JpaRepository<Reel, Long> {
     // Existing — used by ReelServiceImpl.getAll() and ReelServiceImpl.getById()
     List<Reel> findByCreator(Customer creator);
     List<Reel> findByStatus(ReelStatus status);
+    List<Reel> findByStatusAndCreator(ReelStatus status, Customer creator);
 
     // New — used by FeedServiceImpl for paginated feed queries
     Page<Reel> findByStatusOrderByCreatedAtDesc(ReelStatus status, Pageable pageable);
@@ -35,4 +36,4 @@ public interface ReelRepository extends JpaRepository<Reel, Long> {
     List<Reel> findTop5ForRagContext(@org.springframework.data.repository.query.Param("status") ReelStatus status,
                                      @org.springframework.data.repository.query.Param("keyword") String keyword,
                                      Pageable pageable);
-}
+}

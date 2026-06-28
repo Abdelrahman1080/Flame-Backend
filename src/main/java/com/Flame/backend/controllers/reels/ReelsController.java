@@ -29,6 +29,11 @@ public class ReelsController {
         return reelService.getAll();
     }
 
+    @GetMapping("/user/{userId}")
+    public List<ReelResponseDTO> getReelsByUser(@PathVariable Integer userId) {
+        return reelService.getReelsByUser(userId);
+    }
+
     @GetMapping("/{id}")
     public ReelResponseDTO getOne(@PathVariable Long id) {
         return reelService.getById(id);
