@@ -10,6 +10,7 @@ import java.util.UUID;
 import com.Flame.backend.DTO.customer.UserResponse;
 import com.Flame.backend.entities.user.Customer;
 import com.Flame.backend.entities.user.Role;
+import com.Flame.backend.services.reelsModeration.GcsFileUploadService;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,6 +33,7 @@ public class UserProfileController {
     private static final long MAX_FILE_SIZE = 10 * 1024 * 1024;
 
     private final UserRepository userRepository;
+    private final GcsFileUploadService gcsFileUploadService;
 
     @GetMapping("/me")
     public UserResponse getCurrentUser(Authentication authentication) {
@@ -51,7 +53,7 @@ public class UserProfileController {
                 role
         );
     }
-
+/*
     @PostMapping(value = "/me/profile-image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public User uploadProfileImage(@RequestParam("file") MultipartFile file, Authentication authentication) throws IOException {
         if (file == null || file.isEmpty()) {
@@ -88,5 +90,26 @@ public class UserProfileController {
             return userRepository.save(user);
         }
         return null;
+    }*/
+
+
+    @PostMapping(value = "/me/profile-image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public User uploadProfileImage(@RequestParam("file") MultipartFile file,
+                                   Authentication authentication) throws IOException {
+        if (file == null || file.isEmpty())
+            throw new RuntimeException("No file uploaded");
+
+        User user = (User) authentication.getPrincipal();
+
+        // Delete old profile image from GCS
+        if (user.getProfileUrl() != null) {
+            gcsFileUploadService.deleteFile(user.getProfileUrl());
+        }
+
+        // Upload new image to GCS
+        String newUrl = gcsFileUploadService.uploadImage(file, "profile-images");
+        user.setProfileUrl(newUrl);
+
+        return userRepository.save(user);
     }
 }

@@ -1,66 +1,48 @@
 package com.Flame.backend.services.community;
 
+import com.Flame.backend.DAO.community.CommunityCommentRepository;
+import com.Flame.backend.DAO.community.CommunityPostRepository;
+import com.Flame.backend.DAO.community.CommunityRepository;
+import com.Flame.backend.DAO.users.UserRepository;
 import com.Flame.backend.DTO.community.*;
 import com.Flame.backend.DTO.customer.UserResponse;
 import com.Flame.backend.entities.community.Community;
 import com.Flame.backend.entities.community.CommunityComment;
 import com.Flame.backend.entities.community.CommunityPost;
 import com.Flame.backend.entities.user.User;
-import com.Flame.backend.DAO.community.CommunityCommentRepository;
-import com.Flame.backend.DAO.community.CommunityPostRepository;
-import com.Flame.backend.DAO.community.CommunityRepository;
-import com.Flame.backend.DAO.users.UserRepository;
+import com.Flame.backend.services.reelsModeration.GcsFileUploadService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.nio.file.*;
 import java.util.List;
 import java.util.Set;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class CommunityService {
 
-    private final CommunityRepository      communityRepository;
-    private final CommunityPostRepository  communityPostRepository;
+    private final CommunityRepository communityRepository;
+    private final CommunityPostRepository communityPostRepository;
     private final CommunityCommentRepository communityCommentRepository;
-    private final UserRepository           userRepository;
-
-    private static final long MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+    private final UserRepository userRepository;
+    private final GcsFileUploadService gcsFileUploadService;
 
     // ── File upload ──────────────────────────────────────────────────────────
 
     public String savePhoto(MultipartFile file, String oldPhotoUrl) throws IOException {
         if (file == null || file.isEmpty()) return null;
+        if (oldPhotoUrl != null) gcsFileUploadService.deleteFile(oldPhotoUrl);
+        return gcsFileUploadService.uploadImage(file, "community-images");
+    }
 
-        if (file.getSize() > MAX_FILE_SIZE)
-            throw new RuntimeException("File too large. Max size is 10MB");
-
-        String contentType = file.getContentType() == null ? "" : file.getContentType();
-        if (!contentType.startsWith("image/"))
-            throw new RuntimeException("Only image files are allowed");
-
-        if (oldPhotoUrl != null)
-            Files.deleteIfExists(Paths.get(oldPhotoUrl));
-
-        String originalName = file.getOriginalFilename() == null ? "photo" : file.getOriginalFilename();
-        String extension = "";
-        int dotIndex = originalName.lastIndexOf('.');
-        if (dotIndex >= 0) extension = originalName.substring(dotIndex);
-
-        Path uploadDir = Paths.get("uploads", "community-images").toAbsolutePath().normalize();
-        Files.createDirectories(uploadDir);
-
-        String filename = UUID.randomUUID() + extension;
-        Path target = uploadDir.resolve(filename);
-        Files.copy(file.getInputStream(), target, StandardCopyOption.REPLACE_EXISTING);
-
-        return "/uploads/community-images/" + filename;
+    public String savePostImage(MultipartFile file, String oldImageUrl) throws IOException {
+        if (file == null || file.isEmpty()) return null;
+        if (oldImageUrl != null) gcsFileUploadService.deleteFile(oldImageUrl);
+        return gcsFileUploadService.uploadImage(file, "post-images");
     }
 
     // ── Mappers ──────────────────────────────────────────────────────────────
@@ -85,7 +67,6 @@ public class CommunityService {
         );
     }
 
-    // currentUserId = null when called from a public context (no auth needed)
     private CommunityPostResponse toPostResponse(CommunityPost post, Integer currentUserId) {
         List<CommunityCommentResponse> comments = post.getComments().stream()
                 .sorted((a, b) -> a.getCreatedAt().compareTo(b.getCreatedAt()))
@@ -212,9 +193,7 @@ public class CommunityService {
     public void deleteCommunity(Integer currentUserId, Integer communityId) {
         Community community = getCommunityOrThrow(communityId);
         assertIsAdmin(community, currentUserId);
-        if (community.getPhotoUrl() != null) {
-            try { Files.deleteIfExists(Paths.get(community.getPhotoUrl())); } catch (IOException ignored) {}
-        }
+        gcsFileUploadService.deleteFile(community.getPhotoUrl());
         communityRepository.delete(community);
     }
 
@@ -283,9 +262,7 @@ public class CommunityService {
         if (!isAdmin && !isAuthor)
             throw new RuntimeException("Only the post author or community admin can delete this post.");
 
-        if (post.getImageUrl() != null) {
-            try { Files.deleteIfExists(Paths.get(post.getImageUrl())); } catch (IOException ignored) {}
-        }
+        gcsFileUploadService.deleteFile(post.getImageUrl());
         communityPostRepository.delete(post);
     }
 
@@ -296,12 +273,11 @@ public class CommunityService {
         Community community = getCommunityOrThrow(communityId);
         assertIsMemberOrAdmin(community, currentUserId);
         CommunityPost post = getPostOrThrow(postId);
-        User user = getUserOrThrow(currentUserId);
 
         if (post.getLikes().stream().anyMatch(u -> u.getId().equals(currentUserId)))
             throw new RuntimeException("You already liked this post.");
 
-        post.getLikes().add(user);
+        post.getLikes().add(getUserOrThrow(currentUserId));
         return toPostResponse(communityPostRepository.save(post), currentUserId);
     }
 
@@ -310,7 +286,6 @@ public class CommunityService {
         Community community = getCommunityOrThrow(communityId);
         assertIsMemberOrAdmin(community, currentUserId);
         CommunityPost post = getPostOrThrow(postId);
-
         post.getLikes().removeIf(u -> u.getId().equals(currentUserId));
         return toPostResponse(communityPostRepository.save(post), currentUserId);
     }
@@ -321,12 +296,11 @@ public class CommunityService {
     public CommunityCommentResponse addComment(Integer currentUserId, Integer communityId, Integer postId, AddCommentRequest request) {
         Community community = getCommunityOrThrow(communityId);
         assertIsMemberOrAdmin(community, currentUserId);
-        CommunityPost post = getPostOrThrow(postId);
 
         CommunityComment comment = CommunityComment.builder()
                 .content(request.getContent())
                 .author(getUserOrThrow(currentUserId))
-                .post(post)
+                .post(getPostOrThrow(postId))
                 .build();
 
         return toCommentResponse(communityCommentRepository.save(comment));

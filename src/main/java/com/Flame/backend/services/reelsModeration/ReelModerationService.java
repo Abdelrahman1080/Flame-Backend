@@ -25,23 +25,24 @@ import java.util.stream.Collectors;
 public class ReelModerationService {
 
     private final GoogleVideoModerationService googleVideoModerationService;
-    private final GcsUploadService gcsUploadService;
     private final ModerationResultRepository moderationResultRepository;
     private final ReelRepository reelRepository;
 
-    private static final String LOCAL_UPLOADS_PATH = "uploads/";
+    // GcsUploadService is no longer needed here —
+    // videos are already on GCS before this method is called
 
+    /**
+     * @param reel   the saved reel entity
+     * @param gcsUri the gs:// URI — e.g. gs://my-bucket/reels/abc.mp4
+     *               passed directly from ReelServiceImpl after GCS upload
+     */
     @Async
     @Transactional
-    public void scanAndPersistAsync(Reel reel, String localFileName) {
-        log.info("Background moderation scan started for reel id={}", reel.getId());
-        String gcsFileName = "reels/" + localFileName;
-        String gcsUri = null;
+    public void scanAndPersistAsync(Reel reel, String gcsUri) {
+        log.info("Background moderation scan started for reel id={}, uri={}", reel.getId(), gcsUri);
 
         try {
-            String localFilePath = LOCAL_UPLOADS_PATH + localFileName;
-            gcsUri = gcsUploadService.uploadVideoToGcs(localFilePath, gcsFileName);
-
+            // Video is already on GCS — scan it directly, no upload needed
             AiModerationResponse aiResult = googleVideoModerationService.moderateVideo(gcsUri);
 
             ReelStatus newStatus = aiResult.isFlagged()
@@ -69,11 +70,10 @@ public class ReelModerationService {
             log.error("Moderation scan failed for reel id={}: {}", reel.getId(), ex.getMessage());
             reel.setStatus(ReelStatus.APPROVED);
             reelRepository.save(reel);
-        } finally {
-            if (gcsUri != null) {
-                gcsUploadService.deleteFromGcs(gcsFileName);
-            }
         }
+
+        // No finally block needed — we no longer delete from GCS after scanning
+        // because the video lives there permanently now
     }
 
     @Transactional(readOnly = true)
