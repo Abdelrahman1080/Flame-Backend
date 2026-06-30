@@ -199,4 +199,23 @@ public class ReelServiceImpl implements ReelService {
         String withoutHost = publicUrl.replace("https://storage.googleapis.com/", "");
         return "gs://" + withoutHost;
     }
+    @Override
+    public List<ReelResponseDTO> getLiked() {
+        Customer customer = getCurrentUser();
+
+        return reelRepository.findByLikesContaining(customer)
+                .stream()
+                .map(reel -> ReelMapper.toDTO(reel, customer))
+                .toList();
+    }
+
+    @Override
+    public List<ReelResponseDTO> getSaved() {
+        Customer customer = getCurrentUser();
+
+        return reelRepository.findBySavedByContaining(customer)
+                .stream()
+                .map(reel -> ReelMapper.toDTO(reel, customer))
+                .toList();
+    }
 }

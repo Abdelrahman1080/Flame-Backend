@@ -51,24 +51,25 @@ public class JwtAuthrnticationFilter extends OncePerRequestFilter {
             return;
         }
 
-        if(userEmail!=null && SecurityContextHolder.getContext().getAuthentication()==null){
-
-            UserDetails userDetails=this.userDetailsService.loadUserByUsername(userEmail);
-            boolean valid = jwtService.validateToken(jwt,userDetails);
-            log.debug("Token valid for user {}: {}", userEmail, valid);
-            if(valid && userDetails.isEnabled()){
-
-                UsernamePasswordAuthenticationToken authToken= new UsernamePasswordAuthenticationToken(
-                        userDetails,
-                        null,
-                        userDetails.getAuthorities()
-                );
-                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(authToken);
-                log.debug("Security context updated with authentication for user: {}", userEmail);
+        if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            try {
+                UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
+                boolean valid = jwtService.validateToken(jwt, userDetails);
+                log.debug("Token valid for user {}: {}", userEmail, valid);
+                if (valid && userDetails.isEnabled()) {
+                    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                            userDetails,
+                            null,
+                            userDetails.getAuthorities()
+                    );
+                    authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    SecurityContextHolder.getContext().setAuthentication(authToken);
+                    log.debug("Security context updated with authentication for user: {}", userEmail);
+                }
+            } catch (Exception e) {
+                log.warn("Could not authenticate user from token: {}", e.getMessage());
             }
         }
-        // always continue the chain
-        filterChain.doFilter(request,response);
+        filterChain.doFilter(request, response);
     }
 }

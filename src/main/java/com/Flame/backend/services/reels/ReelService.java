@@ -24,6 +24,10 @@ public interface ReelService {
 
     void toggleSave(Long reelId);
 
+    List<ReelResponseDTO> getLiked();
+
+    List<ReelResponseDTO> getSaved();
+
     ReelResponseDTO uploadDummy(MultipartFile video,
                                 String caption,
                                 String preferences) throws IOException;

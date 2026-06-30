@@ -54,6 +54,16 @@ public class ReelsController {
         reelService.toggleSave(id);
     }
 
+    @GetMapping("/liked")
+    public List<ReelResponseDTO> getLiked() {
+        return reelService.getLiked();
+    }
+
+    @GetMapping("/saved")
+    public List<ReelResponseDTO> getSaved() {
+        return reelService.getSaved();
+    }
+
     // Dummy upload — skips moderation, sets status to APPROVED directly
     // Use this for testing only, not for production
     @PostMapping("/upload/dummy")

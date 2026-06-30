@@ -18,6 +18,10 @@ public interface ReelRepository extends JpaRepository<Reel, Long> {
     List<Reel> findByStatus(ReelStatus status);
     List<Reel> findByStatusAndCreator(ReelStatus status, Customer creator);
 
+    // Used by liked/saved feed endpoints
+    List<Reel> findByLikesContaining(Customer customer);
+    List<Reel> findBySavedByContaining(Customer customer);
+
     // New — used by FeedServiceImpl for paginated feed queries
     Page<Reel> findByStatusOrderByCreatedAtDesc(ReelStatus status, Pageable pageable);
 
