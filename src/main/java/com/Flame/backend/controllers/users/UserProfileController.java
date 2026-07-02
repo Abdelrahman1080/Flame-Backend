@@ -34,7 +34,6 @@ public class UserProfileController {
 
     private final UserRepository userRepository;
     private final GcsFileUploadService gcsFileUploadService;
-
     @GetMapping("/me")
     public UserResponse getCurrentUser(Authentication authentication) {
 

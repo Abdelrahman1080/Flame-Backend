@@ -203,7 +203,6 @@ public class CustomerController {
     }
 
     @PostMapping("/events/{eventId}/book")
-    @Transactional
     public Map<String, Object> bookEvent(
             @PathVariable Long eventId,
             Authentication authentication,
@@ -273,7 +272,6 @@ public class CustomerController {
  
 
     @PostMapping("/workshops/{workshopId}/book")
-    @Transactional
     public Map<String, Object> bookWorkshop(
             @PathVariable Long workshopId,
             Authentication authentication,
